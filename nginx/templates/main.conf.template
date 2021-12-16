@@ -1,0 +1,24 @@
+# Main server handling html and redirects instead of 404
+
+server {
+    listen       ${PORT};
+    listen  [::]:${PORT};
+    server_name  ${HOSTNAME};
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page  404              @redirect;
+    location @redirect {
+        return 301      https://${HOSTNAME}/;
+    }
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
