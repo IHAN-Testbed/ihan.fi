@@ -5,12 +5,17 @@ server {
     listen  [::]:${PORT};
     server_name  ${HOSTNAME};
 
-    location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
+    root   /usr/share/nginx/html/main;
+    index  index.html index.htm;
+
+    location = /favicon.ico {
+        # Use real 404 here
     }
 
-    error_page  404              @redirect;
+    location / {
+        error_page  404              @redirect;
+    }
+
     location @redirect {
         return 301      https://${HOSTNAME}/;
     }
