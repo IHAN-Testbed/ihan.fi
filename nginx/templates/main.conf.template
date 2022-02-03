@@ -1,0 +1,45 @@
+# Main server handling html and redirects instead of 404
+
+server {
+    listen       ${PORT};
+    listen  [::]:${PORT};
+    server_name  ${HOSTNAME};
+
+    root   /usr/share/nginx/html/main;
+    index  index.html index.htm;
+
+    # favicon.ico
+    location = /favicon.ico {
+        # Use real 404 here
+        log_not_found off;
+        access_log off;
+    }
+
+    # robots.txt
+    location = /robots.txt {
+        # Use real 404 here
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        error_page  404              @redirect;
+    }
+
+    location @redirect {
+        return 301      ${REDIRECT_PROTOCOL}://${HOSTNAME}${REDIRECT_PORT}/;
+    }
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+}

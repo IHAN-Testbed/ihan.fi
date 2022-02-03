@@ -1,0 +1,13 @@
+# Default server handling just redirects to the primary hostname
+
+server {
+    listen       ${PORT} default_server;
+    listen  [::]:${PORT} default_server;
+
+    return 301   ${REDIRECT_PROTOCOL}://${HOSTNAME}${REDIRECT_PORT}/;
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
