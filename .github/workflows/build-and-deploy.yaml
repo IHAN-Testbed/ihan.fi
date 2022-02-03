@@ -19,12 +19,11 @@ on:
   push:
     branches:
       - 'main'
-      - 'dev'
 
 name: Build and Deploy to Cloud Run
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  SERVICE: ihan-fi-website-github
+  SERVICE: ihan-fi-website
   REGION: europe-north1
   REGISTRY: eu.gcr.io
 
